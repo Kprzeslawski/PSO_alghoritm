@@ -9,17 +9,18 @@
 #endif
 
 class PSO {
+public:
 
     /**
      * @return Returns optimal solution (minimum)
      *
      * @param fun Optimized function
-     * @param constraints Constraints of optimized function
+     * @param constraints Constraints of optimized function - first dim is for variable second for its min and max
      * @param count Count of variables
      */
     static D* optimize(
-        D* fun(D* ,int),
-        D** constraints,
+        D *fun(D *, int),
+        D **constraints,
         int count
     );
 };

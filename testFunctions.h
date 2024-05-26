@@ -12,7 +12,7 @@
 class testFunctions {
 
 public:
-    static D fun1(D* x, int count);
+    static D* fun1(D* x, int count);
 
 };
 

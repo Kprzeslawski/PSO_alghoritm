@@ -5,7 +5,7 @@
 #include "PSO.h"
 
 
-double * PSO::optimize(double *fun(double *, int), double **constraints, int count) {
+D * PSO::optimize(D *fun(D *, int), D **constraints, int count) {
     //TODO
     return nullptr;
 }
