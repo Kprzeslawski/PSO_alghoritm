@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(untitled main.cpp
         testFunctions.cpp
-        testFunctions.h)
+        testFunctions.h
+        PSO.cpp
+        PSO.h)
