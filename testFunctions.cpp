@@ -6,9 +6,8 @@
 
 #include <stdexcept>
 
-double* testFunctions::fun1(double *x, int count) {
+double testFunctions::fun1(double *x, int count) {
     if(count < 2)throw std::runtime_error("Invalid args count");
-    return new double {
-        ((x[0] - 5) * (x[0] - 1) + 12) * ((x[1] - 2) * (x[1] - 3) + 4)
-    };
+    return ((x[0] - 5) * (x[0] - 1) + 12) * ((x[1] - 2) * (x[1] - 3) + 4);
+
 }

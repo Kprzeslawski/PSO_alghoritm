@@ -19,7 +19,7 @@ public:
      * @param count Count of variables
      */
     static D* optimize(
-        D *fun(D *, int),
+        D fun(D *, int),
         D **constraints,
         int count
     );
