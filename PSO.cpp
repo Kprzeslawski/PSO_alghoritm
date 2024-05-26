@@ -4,7 +4,8 @@
 
 #include "PSO.h"
 
-double * PSO::optimize() {
 
+double * PSO::optimize(double *fun(double *, int), double **constraints, int count) {
+    //TODO
     return nullptr;
 }

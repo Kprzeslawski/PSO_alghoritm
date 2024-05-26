@@ -10,8 +10,18 @@
 
 class PSO {
 
-    static D* optimize();
-
+    /**
+     * @return Returns optimal solution (minimum)
+     *
+     * @param fun Optimized function
+     * @param constraints Constraints of optimized function
+     * @param count Count of variables
+     */
+    static D* optimize(
+        D* fun(D* ,int),
+        D** constraints,
+        int count
+    );
 };
 
 #endif //PSO_H
