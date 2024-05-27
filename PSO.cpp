@@ -9,10 +9,11 @@
 PSO::PSO() = default;
 
 D * PSO::optimize(
-    D fun(double*, int),
+    D (*fun)(double*, int),
     D **constraints,
     int count,
     int particle_number,
+    int particle_steps,
     D inertia,
     D cop,
     D sios,
@@ -40,7 +41,7 @@ D * PSO::optimize(
         }
         auto best_particle_value = fun(best_particle_position, count);
 
-        for(int moves = 0; moves < 1000; moves++) {
+        for(int moves = 0; moves < particle_steps; moves++) {
             for(int i3 = 0; i3 < count; i3++) {
                 particle_velocity[i3] =
                     inertia * particle_velocity[i3] +

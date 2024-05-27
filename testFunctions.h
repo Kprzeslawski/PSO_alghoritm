@@ -15,20 +15,22 @@
 
 class testFunctions {
     //stałe
-    D R = 8.314462;
+    static D R;
     //stal
-    D b = 0.25e-9;
-    D d = 30;
-    D u = 43500;
-    D Q = 312000;
-    D p0 = 1e4;
+    static D b;
+    static D d;
+    static D u;
+    static D Q;
+    static D p0;
 
 public:
+    testFunctions() = default;
+
     static D fun1(D* x, int count);
     static D ff_solve(D* x, int count);
 
-    D* CalcUsingEuler(D* a, D e_dot, D t_kel);
-    D* CalcUsingEuler(D beg_ro, D beg_t, D end_t, int steps, D* a, D e_dot, D t_kel);
+    static D* CalcUsingEuler(D* a, D e_dot, D t_kel);
+    static D* CalcUsingEuler(D beg_ro, D beg_t, D end_t, int steps, D* a, D e_dot, D t_kel);
 };
 
 

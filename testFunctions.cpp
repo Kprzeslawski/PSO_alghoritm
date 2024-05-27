@@ -9,6 +9,16 @@
 
 #include "DataStorage.h"
 
+
+//stałe
+D testFunctions::R = 8.314462;
+//stal
+D testFunctions::b = 0.25e-9;
+D testFunctions::d = 30;
+D testFunctions::u = 43500;
+D testFunctions::Q = 312000;
+D testFunctions::p0 = 1e4;
+
 D testFunctions::fun1(D *x, int count) {
     if(count < 2)throw std::runtime_error("Invalid args count");
     return ((x[0] - 5) * (x[0] - 1) + 12) * ((x[1] - 2) * (x[1] - 3) + 4);
@@ -19,24 +29,23 @@ D testFunctions::ff_solve(D *x, int count) {
     if(count < 5)throw std::runtime_error("Invalid args count");
     D y = 0;
     DataStorage ds = DataStorage::getInstance();
-    D* res;
+    D* res = nullptr;
 
     for (int i = 8; i < 9; i++) {
-        //std::cout << "________________________ITER: "<< i << std::endl;
-        //res = CalcUsingEuler(DT{ xt(0),xt(1),xt(2),
-        //	xt(3),xt(4),xt(5),xt(6),xt(7),xt(8),xt(9),
-        //	xt(10)}, ds.e_dot[i], ds.t[i] + 273.);
-
-        res = CalcUsingEuler(new D[]{ x[0],x[1],x[2],
-            3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,
-            x[4] }, ds.e_dot[i], ds.t[i] + 273.);
+        // std::cout << "________________________ITER: "<< i << std::endl;
+        // res = CalcUsingEuler(DT{ xt(0),xt(1),xt(2),
+        // 	xt(3),xt(4),xt(5),xt(6),xt(7),xt(8),xt(9),
+        // 	xt(10)}, ds.e_dot[i], ds.t[i] + 273.);
+        D args[] = { x[0],x[1],x[2],3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,x[4]};
+        res = CalcUsingEuler(args, ds.e_dot[i], ds.t[i] + 273.);
 
         for (int i2 = 0; i2 < 1001; i2++) {
-            if (i2 < 1000) {
-                D grad_res = (res[i2] - res[i2 + 1]) / ds.e_dot[i];
-                D grad_y = (ds.ro[i][i2] - ds.ro[i][i2 + 1]) / ds.e_dot[i];
-                y() = y() + abs(grad_res - grad_y);
-            }
+            y += pow( 1. - ds.ro[i][i2]/res[i2],2.);
+            // if (i2 < 1000) {
+            //     D grad_res = (res[i2] - res[i2 + 1]) / ds.e_dot[i];
+            //     D grad_y = (ds.ro[i][i2] - ds.ro[i][i2 + 1]) / ds.e_dot[i];
+            //     y += abs(grad_res - grad_y);
+            // }
         }
         if (ds.save && i == 8) {
             std::cout << "SAVING... \n";
@@ -46,6 +55,7 @@ D testFunctions::ff_solve(D *x, int count) {
             std::cout << "OK\n";
         }
     }
+    delete res;
 
     return y;
 }

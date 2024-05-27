@@ -8,7 +8,7 @@ DataStorage* DataStorage::instance = nullptr;
 
 DataStorage::DataStorage(){
 
-    ifstream file("data_out.csv");
+    ifstream file("./../data_out.csv");
     double f;
     save = false;
 
