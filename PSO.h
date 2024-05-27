@@ -12,12 +12,12 @@ class PSO {
 
     int particle_number = 1000;
 
+public:
     //generators
     static D RN();
     static D RN(D *);
     static D RN(D ,D);
 
-public:
 
     PSO();
 

@@ -28,19 +28,22 @@ D * PSO::optimize(D fun(D *, int), D **constraints, int count) {
 
 
 D PSO::RN() {
-    std::uniform_real_distribution<double> unif(0,1);
-    std::default_random_engine re;
+    std::uniform_real_distribution<auto> unif(0,1);
+    std::random_device r;
+    std::default_random_engine re(r());
     return unif(re);
 }
 
 D PSO::RN(D * c) {
-    std::uniform_real_distribution<double> unif(c[0],c[1]);
-    std::default_random_engine re;
+    std::uniform_real_distribution<auto> unif(c[0],c[1]);
+    std::random_device r;
+    std::default_random_engine re(r());
     return unif(re);
 }
 
 D PSO::RN(D a, D b) {
-    std::uniform_real_distribution<double> unif(a,b);
-    std::default_random_engine re;
+    std::uniform_real_distribution<auto> unif(a,b);
+    std::random_device r;
+    std::default_random_engine re(r());
     return unif(re);
 }

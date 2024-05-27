@@ -10,6 +10,7 @@ int main() {
         new double[]{0., 10.},
         new double[]{0., 10.}
     };
+    std::cout << "Random value from constraints: "<< PSO::RN(f_con[0]) << std::endl;
 
     auto alg = PSO();
 
