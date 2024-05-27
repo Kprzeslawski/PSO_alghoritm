@@ -27,11 +27,21 @@ public:
      * @param fun Optimized function
      * @param constraints Constraints of optimized function - first dim is for variable second for its min and max
      * @param count Count of variables
+     * @param particle_number Number of particles
+     * @param inertia Inertia of particle
+     * @param cop Cognition of particle
+     * @param sios Social influence of swarm
+     * @param rsv Random initial velocity multiplayer based on constraints
      */
     D* optimize(
         D fun(D *, int),
         D **constraints,
-        int count
+        int count,
+        int particle_number,
+        D inertia,
+        D cop,
+        D sios,
+        D rsv
     );
 };
 

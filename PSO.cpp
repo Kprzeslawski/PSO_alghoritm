@@ -7,23 +7,44 @@
 
 PSO::PSO() = default;
 
-D * PSO::optimize(D fun(D *, int), D **constraints, int count) {
+D * PSO::optimize(
+    D fun(double*, int),
+    D **constraints,
+    int count,
+    int particle_number,
+    D inertia,
+    D cop,
+    D sios,
+    D rsv
+    ) {
 
-    auto * solution = new D[count];
+    auto * best_solution = new D[count];
     for (int i = 0; i < count; ++i)
-        solution[i] = (constraints[i][0] + constraints[i][1]) * .5;
+        best_solution[i] = (constraints[i][0] + constraints[i][1]) * .5;
 
-    auto solution_value = fun(solution, count);
+    auto solution_value = fun(best_solution, count);
 
     //generate particle
     for(int i = 0; i < this->particle_number; i++) {
         //init its random cords
         auto * particle_position = new D[count];
-        for(int i2 = 0; i2 < count; i2++)
-            particle_position[i2] = RN(constraints[i]);
+        auto * best_particle_position = new D[count];
+        auto * particle_velocity = new D[count];
 
+        for(int i2 = 0; i2 < count; i2++) {
+            particle_position[i2] = RN(constraints[i]);
+            particle_velocity[i2] = RN(constraints[i]) * rsv;
+            best_particle_position[i2] = particle_position[i2];
+        }
+        auto best_value = fun(best_particle_position, count);
+
+        while (true) {
+            for(int i3 = 0; i3 < count; i3++) {
+
+            }
+        }
     }
-    return solution;
+    return best_solution;
 }
 
 
