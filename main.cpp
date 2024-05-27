@@ -13,7 +13,10 @@ int main() {
     std::cout << "Random value from constraints: "<< PSO::RN(f_con[0]) << std::endl;
 
     auto alg = PSO();
-    auto sol_vect = alg.optimize(testFunctions::fun1,f_con,2,1000,0.8,0.1,0.1,0.1);
+    auto t_0 = clock();
+    auto sol_vect = alg.optimize(testFunctions::fun1,f_con,2,10000,0.8,0.1,0.1,0.1);
+    std::cout << "T: " << clock() - t_0 << std::endl;
+
 
     std::cout << "F(0,0): "<< testFunctions::fun1(arr,2) << std::endl;
     std::cout << "F - optimal: "

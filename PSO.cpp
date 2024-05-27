@@ -4,6 +4,7 @@
 #include "PSO.h"
 
 #include <random>
+#include <omp.h>
 
 PSO::PSO() = default;
 
@@ -25,6 +26,7 @@ D * PSO::optimize(
     auto best_solution_value = fun(best_solution, count);
 
     //generate particle
+    #pragma omp parallel for num_threads(8)
     for(int i = 0; i < particle_number; i++) {
         //init its random cords
         auto * particle_position = new D[count];
@@ -55,6 +57,7 @@ D * PSO::optimize(
                 for(int i3 = 0; i3 < count; i3++)
                     best_particle_position[i3] = particle_position[i3];
             }
+            #pragma omp critical
             if(fun(particle_position,count) < best_solution_value) {
                 best_solution_value = fun(particle_position,count);
                 for(int i3 = 0; i3 < count; i3++)
