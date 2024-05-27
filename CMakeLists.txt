@@ -8,4 +8,7 @@ add_executable(untitled main.cpp
         testFunctions.cpp
         testFunctions.h
         PSO.cpp
-        PSO.h)
+        PSO.h
+        DataStorage.cpp
+        DataStorage.h
+)
