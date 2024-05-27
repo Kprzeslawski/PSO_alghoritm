@@ -9,7 +9,17 @@
 #endif
 
 class PSO {
+
+    int particle_number = 1000;
+
+    //generators
+    static D RN();
+    static D RN(D *);
+    static D RN(D ,D);
+
 public:
+
+    PSO();
 
     /**
      * @return Returns optimal solution (minimum)
@@ -18,7 +28,7 @@ public:
      * @param constraints Constraints of optimized function - first dim is for variable second for its min and max
      * @param count Count of variables
      */
-    static D* optimize(
+    D* optimize(
         D fun(D *, int),
         D **constraints,
         int count
