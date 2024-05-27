@@ -25,7 +25,7 @@ D * PSO::optimize(
     auto solution_value = fun(best_solution, count);
 
     //generate particle
-    for(int i = 0; i < this->particle_number; i++) {
+    for(int i = 0; i < particle_number; i++) {
         //init its random cords
         auto * particle_position = new D[count];
         auto * best_particle_position = new D[count];
@@ -40,8 +40,17 @@ D * PSO::optimize(
 
         while (true) {
             for(int i3 = 0; i3 < count; i3++) {
+                particle_velocity[i3] =
+                    inertia * particle_velocity[i3] +
+                    RN() * cop * (best_particle_position[i] - particle_position[i]) +
+                    RN() * sios * (best_particle_position[i] - particle_position[i]);
+                particle_position[i3] += particle_velocity[i3];
 
+                if(particle_position[i3] < constraints[i3][0])particle_position[i3] = constraints[i3][0];
+                else if(particle_position[i3] > constraints[i3][1])particle_position[i3] = constraints[i3][1];
             }
+
+
         }
     }
     return best_solution;
