@@ -14,9 +14,9 @@
 D testFunctions::R = 8.314462;
 //stal
 D testFunctions::b = 0.25e-9;
-D testFunctions::d = 30;
-D testFunctions::u = 43500;
-D testFunctions::Q = 312000;
+D testFunctions::d = 30.;
+D testFunctions::u = 43500.;
+D testFunctions::Q = 312000.;
 D testFunctions::p0 = 1e4;
 
 D testFunctions::fun1(D *x, int count) {
@@ -26,9 +26,9 @@ D testFunctions::fun1(D *x, int count) {
 }
 
 D testFunctions::ff_solve(D *x, int count) {
-    if(count < 5)throw std::runtime_error("Invalid args count");
+    if(count < 2)throw std::runtime_error("Invalid args count");
     D y = 0;
-    DataStorage ds = DataStorage::getInstance();
+    auto ds = DataStorage::getInstance();
     D* res = nullptr;
 
     for (int i = 8; i < 9; i++) {
@@ -36,18 +36,29 @@ D testFunctions::ff_solve(D *x, int count) {
         // res = CalcUsingEuler(DT{ xt(0),xt(1),xt(2),
         // 	xt(3),xt(4),xt(5),xt(6),xt(7),xt(8),xt(9),
         // 	xt(10)}, ds.e_dot[i], ds.t[i] + 273.);
-        D args[] = { x[0],x[1],x[2],3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,x[4]};
-        res = CalcUsingEuler(args, ds.e_dot[i], ds.t[i] + 273.);
+        //D args[] = { x[0],x[1],x[2],3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,x[4]};
+        D args[] = { x[0],
+            x[1],
+            1e3 * 83.349,
+            3e10 * 0.05317,
+            1e3 * 123.12,
+            0.452,
+            0.13751,
+            0.409,
+            0.,
+            1e13 * 0.000042,
+            0.07486};
+        res = CalcUsingEuler(args, ds->e_dot[i], ds->t[i]);
 
         for (int i2 = 0; i2 < 1001; i2++) {
-            y += pow( 1. - ds.ro[i][i2]/res[i2],2.);
-            // if (i2 < 1000) {
-            //     D grad_res = (res[i2] - res[i2 + 1]) / ds.e_dot[i];
-            //     D grad_y = (ds.ro[i][i2] - ds.ro[i][i2 + 1]) / ds.e_dot[i];
-            //     y += abs(grad_res - grad_y);
-            // }
+            //y += pow( 1. - ds->ro[i][i2]/res[i2],2.);
+            if (i2 < 1000) {
+                D grad_res = (res[i2] - res[i2 + 1]) / res[i2];
+                D grad_y = (ds->ro[i][i2] - ds->ro[i][i2 + 1]) / ds->ro[i][i2];
+                y += abs(grad_res - grad_y);
+            }
         }
-        if (ds.save && i == 8) {
+        if (ds->save && i == 8) {
             std::cout << "SAVING... \n";
             std::ofstream plik("data_counted.txt");
             for (int i2 = 0; i2 < 1001; i2++) plik << res[i2] << std::endl;
@@ -81,22 +92,18 @@ D* testFunctions::CalcUsingEuler(D beg_ro, D beg_t, D end_t, int steps, D* a, D 
     bool crit = true;
 
     for (int i = 1; i <= steps; i++) {
-
         ro_dt[i] = ro_dt[i - 1];
-
         if (crit) {
             ro_dt[i] += h * (a1 * e_dot - a2 * ro_dt[i - 1] * e_dot);
+            if(ro_dt[i] >= p_cr) {
+                t_cr_ind = i;
+                crit = false;
+            }
         }
         else {
             ro_dt[i] += h * (a1 * e_dot - a2 * ro_dt[i - 1] * e_dot
                 - a3 * pow(ro_dt[i - 1], a[5]) * ro_dt[i - t_cr_ind]);
         }
-
-        if (crit && ro_dt[i] >= p_cr) {
-            t_cr_ind = i;
-            crit = false;
-        }
     }
-
     return ro_dt;
 }

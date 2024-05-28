@@ -38,14 +38,7 @@ DataStorage::DataStorage(){
     }
 }
 
-DataStorage DataStorage::getInstance()
-{
-    if (DataStorage::instance == nullptr)
-        DataStorage::instance = new DataStorage();
-    return *DataStorage::instance;
-}
-
-DataStorage* DataStorage::getInstance2()
+DataStorage* DataStorage::getInstance()
 {
     if (DataStorage::instance == nullptr)
         DataStorage::instance = new DataStorage();

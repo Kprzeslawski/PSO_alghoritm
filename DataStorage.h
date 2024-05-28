@@ -22,8 +22,7 @@ public:
     vector<double> t;
     vector<double> e_dot;
     bool save;
-    static DataStorage getInstance();
-    static DataStorage* getInstance2();
+    static DataStorage* getInstance();
 };
 
 #endif //DATASTORAGE_H

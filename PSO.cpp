@@ -46,11 +46,17 @@ D * PSO::optimize(
                 particle_velocity[i3] =
                     inertia * particle_velocity[i3] +
                     RN() * cop * (best_particle_position[i3] - particle_position[i3]) +
-                    RN() * sios * (best_particle_position[i3] - particle_position[i3]);
+                    RN() * sios * (best_solution[i3] - particle_position[i3]);
                 particle_position[i3] += particle_velocity[i3];
 
-                if(particle_position[i3] < constraints[i3][0])particle_position[i3] = constraints[i3][0];
-                else if(particle_position[i3] > constraints[i3][1])particle_position[i3] = constraints[i3][1];
+                if(particle_position[i3] < constraints[i3][0]) {
+                    particle_position[i3] = constraints[i3][0];
+                    particle_velocity[i3] *= -1;
+                }
+                else if(particle_position[i3] > constraints[i3][1]) {
+                    particle_position[i3] = constraints[i3][1];
+                    particle_velocity[i3] *= -1;
+                }
             }
 
             if(fun(particle_position,count) < best_particle_value) {
@@ -59,10 +65,12 @@ D * PSO::optimize(
                     best_particle_position[i3] = particle_position[i3];
             }
             #pragma omp critical
-            if(fun(particle_position,count) < best_solution_value) {
-                best_solution_value = fun(particle_position,count);
-                for(int i3 = 0; i3 < count; i3++)
-                    best_solution[i3] = particle_position[i3];
+            {
+                if(fun(particle_position,count) < best_solution_value) {
+                    best_solution_value = fun(particle_position,count);
+                    for(int i3 = 0; i3 < count; i3++)
+                        best_solution[i3] = particle_position[i3];
+                }
             }
 
         }
