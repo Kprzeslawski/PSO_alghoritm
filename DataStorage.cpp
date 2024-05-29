@@ -26,7 +26,6 @@ DataStorage::DataStorage(){
     while (std::getline(lineStream2, word, ';'))
         e_dot.push_back(std::stod(word));
 
-
     for(int i2 = 0; i2 < 1001; i2++){
         std::getline(file, row);
         std::stringstream lineStream3(row);

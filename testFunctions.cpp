@@ -31,34 +31,40 @@ D testFunctions::ff_solve(D *x, int count) {
     auto ds = DataStorage::getInstance();
     D* res = nullptr;
 
-    for (int i = 8; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
         // std::cout << "________________________ITER: "<< i << std::endl;
         // res = CalcUsingEuler(DT{ xt(0),xt(1),xt(2),
         // 	xt(3),xt(4),xt(5),xt(6),xt(7),xt(8),xt(9),
         // 	xt(10)}, ds.e_dot[i], ds.t[i] + 273.);
         //D args[] = { x[0],x[1],x[2],3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,x[4]};
-        D args[] = { x[0],
+        D args[] = {
+            x[0],
             x[1],
+            // 0.000119459,
+            // 21961.6,
             1e3 * 83.349,
             3e10 * 0.05317,
             1e3 * 123.12,
             0.452,
             0.13751,
             0.409,
+            // x[0],
             0.,
+            // x[1],
             1e13 * 0.000042,
+            // 1e8 * 2.42,
             0.07486};
         res = CalcUsingEuler(args, ds->e_dot[i], ds->t[i]);
 
-        for (int i2 = 0; i2 < 1001; i2++) {
-            //y += pow( 1. - ds->ro[i][i2]/res[i2],2.);
-            if (i2 < 1000) {
-                D grad_res = (res[i2] - res[i2 + 1]) / res[i2];
-                D grad_y = (ds->ro[i][i2] - ds->ro[i][i2 + 1]) / ds->ro[i][i2];
-                y += abs(grad_res - grad_y);
-            }
+        for (int i2 = 0; i2 < 500; i2++) {
+            y += pow( 1. - ds->ro[i][i2]/res[i2],2.);
+            // if (i2 < 1000) {
+            //     D grad_res = (res[i2] - res[i2 + 1]) / res[i2];
+            //     D grad_y = (ds->ro[i][i2] - ds->ro[i][i2 + 1]) / ds->ro[i][i2];
+            //     y += pow(grad_res - grad_y,2.);
+            // }
         }
-        if (ds->save && i == 8) {
+        if (ds->save && i == 0) {
             std::cout << "SAVING... \n";
             std::ofstream plik("data_counted.txt");
             for (int i2 = 0; i2 < 1001; i2++) plik << res[i2] << std::endl;
@@ -83,6 +89,15 @@ D* testFunctions::CalcUsingEuler(D beg_ro, D beg_t, D end_t, int steps, D* a, D 
 
     D Z = e_dot * exp(Q / (R * t_kel));
     D p_cr = -a[8] + a[9] * pow(Z, a[7]);
+    // D p_cr = 4.53e13;
+    //  std::cout << "E: " << e_dot << std::endl;
+    //  std::cout << "Z: " << Z << std::endl;
+    // std::cout << "A10: " << a[7] << std::endl;
+    //  std::cout << "Z^P: " << pow(Z, a[7]) << std::endl;
+    //  std::cout << "A12: " << a[9] << std::endl;
+    //  std::cout << "S A12: " << 1.84e13 / pow(Z, a[7])  << std::endl;
+    //  std::cout << "S A12: " << 4.63e13 / pow(Z, a[7])  << std::endl;
+    // std::cout << "RO_CR: " << p_cr << std::endl;//4.60
     D l = a[0] / pow(Z, a[10]);
     D a1 = 1. / (b * l);
     D a2 = a[1] * pow(e_dot, -a[6]) * exp(-a[2] / (R * t_kel));
