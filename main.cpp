@@ -16,7 +16,6 @@ int main() {
 
 void save() {
     auto save = new double[]{9.50753e-05, 17945.4}; // 1.21 - 500
-   // auto save = new double[]{0.277502, 1.1297e+10};
     auto dt = DataStorage::getInstance();
 
     dt->save = true;
@@ -33,8 +32,15 @@ void solve() {
 
     auto dt = DataStorage::getInstance();
     auto **f_con = new double*[] {
-        new double[]{5e-5, 15e-5},
-        new double[]{7000., 22000.}
+        new double[]{5e-5, 15e-5},//A1
+        new double[]{7000., 22000.}, //A2
+        new double[]{1e3*50., 1e3*100.}, //A3
+        new double[]{3e10*.01, 3e10*.09}, //A4
+        new double[]{1e3*100., 1e3*150.}, //A5
+        new double[]{.2, .8}, //A8
+        new double[]{.05, .25}, //A9
+        // new double[]{.1, .9}, //A10
+        new double[]{.01, .09} //A13
         // new double[]{50e3, 100e3},
         // new double[]{0.05, 0.25},
         // new double[]{0.01, 0.09}
@@ -45,17 +51,24 @@ void solve() {
     auto alg = PSO();
 
     auto t_0 = clock();
-    auto sol_vect = alg.optimize(testFunctions::ff_solve,f_con,2,1000,100,0.9,0.001,0.002,0.001);
+    auto sol_vect = alg.optimize(testFunctions::ff_solve,f_con,8,1000,100,0.9,0.001,0.002,0.001);
     std::cout << "T: " << clock() - t_0 << std::endl;
 
     dt->save = true;
 
-    D res = testFunctions::ff_solve(sol_vect,2);
+    D res = testFunctions::ff_solve(sol_vect,8);
     std::cout << "F - optimal: "
         << res
         << " At: "
         << sol_vect[0] << ", "
         << sol_vect[1] << ", "
+        << sol_vect[2] << ", "
+        << sol_vect[3] << ", "
+        << sol_vect[4] << ", "
+        << sol_vect[5] << ", "
+        << sol_vect[6] << ", "
+        << sol_vect[7] << ", "
+        << sol_vect[8] << ", "
     << std::endl;
 }
 

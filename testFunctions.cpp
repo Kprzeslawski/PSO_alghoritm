@@ -38,22 +38,27 @@ D testFunctions::ff_solve(D *x, int count) {
         // 	xt(10)}, ds.e_dot[i], ds.t[i] + 273.);
         //D args[] = { x[0],x[1],x[2],3e10*0.05317,1e3*123.12,0.452,x[3],0.409,0.,1e13*0.000042,x[4]};
         D args[] = {
-            x[0],
-            x[1],
-            // 0.000119459,
-            // 21961.6,
-            1e3 * 83.349,
-            3e10 * 0.05317,
-            1e3 * 123.12,
-            0.452,
-            0.13751,
-            0.409,
+            x[0],//A1
+            x[1],//A2
+            x[2],
+            // 1e3 * 83.349,//A3
+            x[3],
+            // 3e10 * 0.05317,//A4
+            x[4],
+            // 1e3 * 123.12,//A5
+            x[5],
+            // 0.452,//A8
+            x[6],
+            // 0.13751,//A9
+            // x[7],
+            0.409,//A10
             // x[0],
-            0.,
+            0.,//A11
             // x[1],
-            1e13 * 0.000042,
-            // 1e8 * 2.42,
-            0.07486};
+            1e13 * 0.000042, //A12
+            x[7],
+            // 0.07486 //A13
+        };
         res = CalcUsingEuler(args, ds->e_dot[i], ds->t[i]);
 
         for (int i2 = 0; i2 < 500; i2++) {
@@ -64,7 +69,7 @@ D testFunctions::ff_solve(D *x, int count) {
             //     y += pow(grad_res - grad_y,2.);
             // }
         }
-        if (ds->save && i == 0) {
+        if (ds->save && i == 8) {
             std::cout << "SAVING... \n";
             std::ofstream plik("data_counted.txt");
             for (int i2 = 0; i2 < 1001; i2++) plik << res[i2] << std::endl;
