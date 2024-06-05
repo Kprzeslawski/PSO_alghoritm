@@ -10,8 +10,28 @@ void save();
 
 int main() {
     // test_1();
-    solve();
-     // save();
+    // solve();
+    save();
+}
+
+void calculate_slope() {
+    auto dt = DataStorage::getInstance();
+    auto opt_sol = new double[] {
+      9.50753e-05,
+      17945.4,
+      1e3 * 83.349,//A3
+      3e10 * 0.05317,//A4
+      1e3 * 123.12,//A5
+      0.452,//A8
+      0.13751,//A9
+      0.409,//A10
+      0.,//A11
+      1e13 * 0.000042, //A12
+      0.07486 //A13
+    };
+
+    auto alg = PSO();
+    D res = testFunctions::ff_solve(opt_sol,11);
 }
 
 void save() {
@@ -34,13 +54,13 @@ void solve() {
     auto **f_con = new double*[] {
         new double[]{5e-5, 15e-5},//A1
         new double[]{7000., 22000.}, //A2
-        new double[]{1e3*50., 1e3*100.}, //A3
-        new double[]{3e10*.01, 3e10*.09}, //A4
-        new double[]{1e3*100., 1e3*150.}, //A5
-        new double[]{.2, .8}, //A8
-        new double[]{.05, .25}, //A9
+        // new double[]{1e3*50., 1e3*100.}, //A3
+        // new double[]{3e10*.01, 3e10*.09}, //A4
+        // new double[]{1e3*100., 1e3*150.}, //A5
+        // new double[]{.2, .8}, //A8
+        // new double[]{.05, .25}, //A9
         // new double[]{.1, .9}, //A10
-        new double[]{.01, .09} //A13
+        // new double[]{.01, .09} //A13
         // new double[]{50e3, 100e3},
         // new double[]{0.05, 0.25},
         // new double[]{0.01, 0.09}
@@ -51,12 +71,12 @@ void solve() {
     auto alg = PSO();
 
     auto t_0 = clock();
-    auto sol_vect = alg.optimize(testFunctions::ff_solve,f_con,8,1000,100,0.9,0.001,0.002,0.001);
+    auto sol_vect = alg.optimize(testFunctions::ff_solve,f_con,2,1000,100,0.9,0.001,0.002,0.001);
     std::cout << "T: " << clock() - t_0 << std::endl;
 
     dt->save = true;
 
-    D res = testFunctions::ff_solve(sol_vect,8);
+    D res = testFunctions::ff_solve(sol_vect,2);
     std::cout << "F - optimal: "
         << res
         << " At: "

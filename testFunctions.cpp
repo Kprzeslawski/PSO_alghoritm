@@ -40,26 +40,29 @@ D testFunctions::ff_solve(D *x, int count) {
         D args[] = {
             x[0],//A1
             x[1],//A2
-            x[2],
-            // 1e3 * 83.349,//A3
-            x[3],
-            // 3e10 * 0.05317,//A4
-            x[4],
-            // 1e3 * 123.12,//A5
-            x[5],
-            // 0.452,//A8
-            x[6],
-            // 0.13751,//A9
+            // x[2],
+            1e3 * 83.349,//A3
+            // x[3],
+            3e10 * 0.05317,//A4
+            // x[4],
+            1e3 * 123.12,//A5
+            // x[5],
+            0.452,//A8
+            // x[6],
+            0.13751,//A9
             // x[7],
             0.409,//A10
             // x[0],
             0.,//A11
             // x[1],
             1e13 * 0.000042, //A12
-            x[7],
-            // 0.07486 //A13
+            // x[7],
+            0.07486 //A13
         };
-        res = CalcUsingEuler(args, ds->e_dot[i], ds->t[i]);
+        if(count != 11)
+            res = CalcUsingEuler(args, ds->e_dot[i], ds->t[i]);
+        else
+            res = CalcUsingEuler(x, ds->e_dot[i], ds->t[i]);
 
         for (int i2 = 0; i2 < 500; i2++) {
             y += pow( 1. - ds->ro[i][i2]/res[i2],2.);
