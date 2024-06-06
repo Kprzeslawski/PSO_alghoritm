@@ -32,7 +32,9 @@ void calculate_slope() {
 
     // variable 1
     auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+    opt_sol[0] -= 1e-05;
     auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+    opt_sol[0] += 2e-05;
     auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
 
 }
