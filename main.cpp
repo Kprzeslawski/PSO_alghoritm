@@ -7,11 +7,13 @@
 void test_1();
 void solve();
 void save();
+void calculate_slope();
 
 int main() {
     // test_1();
-    solve();
+    // solve();
     // save();
+    calculate_slope();
 }
 
 void calculate_slope() {
