@@ -10,8 +10,8 @@ void save();
 
 int main() {
     // test_1();
-    // solve();
-    save();
+    solve();
+    // save();
 }
 
 void calculate_slope() {
@@ -30,8 +30,11 @@ void calculate_slope() {
       0.07486 //A13
     };
 
-    auto alg = PSO();
-    D res = testFunctions::ff_solve(opt_sol,11);
+    // variable 1
+    auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+    auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+    auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+
 }
 
 void save() {
