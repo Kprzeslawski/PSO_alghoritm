@@ -37,6 +37,16 @@ void calculate_slope() {
     opt_sol[0] += 2e-05;
     auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
 
+        std::ofstream plik("data_diff.txt");
+        for (int i2 = 0; i2 < 1001; i2++)
+            plik
+                << res[i2] << ", "
+                << res_min[i2] << ", "
+                << res_max[i2] << ", "
+                << std::endl;
+        plik.close();
+
+
 }
 
 void save() {
