@@ -8,6 +8,7 @@ void test_1();
 void solve();
 void save();
 void calculate_slope();
+D* calculate_diff(int points,D h, D* center, D* right, D* left);
 
 int main() {
     // test_1();
@@ -39,12 +40,16 @@ void calculate_slope() {
     opt_sol[0] += 1e-05;
     auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
 
+    auto forw = calculate_diff(1001,0.5e-05,res,res_max,nullptr);
+    auto back = calculate_diff(1001,0.5e-05,res,nullptr,res_min);
+    auto center = calculate_diff(1001,0.5e-05,nullptr,res_max,res_min);
+
         std::ofstream plik("data_diff.txt");
         for (int i2 = 0; i2 < 1001; i2++)
             plik
-                << res[i2] << ", "
-                << res_min[i2] << ", "
-                << res_max[i2] << ", "
+                << center[i2] << ", "
+                << back[i2] << ", "
+                << forw[i2] << ", "
                 << std::endl;
         plik.close();
 
@@ -127,7 +132,7 @@ void test_1() {
         << " At: " << sol_vect[0] << ", " << sol_vect[1] << std::endl;
 }
 
-auto calculate_diff(int points,D h, D* center, D* right, D* left) {
+D* calculate_diff(int points,D h, D* center, D* right, D* left) {
     D* dif = new double[points];
 
     if(right != nullptr && left != nullptr) {
