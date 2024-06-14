@@ -34,9 +34,9 @@ void calculate_slope() {
 
     // variable 1
     auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
-    opt_sol[0] -= 1e-05;
+    opt_sol[0] -= 0.5e-05;
     auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
-    opt_sol[0] += 2e-05;
+    opt_sol[0] += 1e-05;
     auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
 
         std::ofstream plik("data_diff.txt");
@@ -125,4 +125,26 @@ void test_1() {
     std::cout << "F - optimal: "
         << testFunctions::fun1(sol_vect,2)
         << " At: " << sol_vect[0] << ", " << sol_vect[1] << std::endl;
+}
+
+auto calculate_diff(int points,D h, D* center, D* right, D* left) {
+    D* dif = new double[points];
+
+    if(right != nullptr && left != nullptr) {
+        for(int i = 0; i < points; i++) {
+            dif[i] = (right[i] - left[i]) / (2*h);
+        }
+    }
+    else if(right != nullptr && center != nullptr) {
+        for(int i = 0; i < points; i++) {
+            dif[i] = (right[i] - center[i]) / h;
+        }
+    }
+    else if(left != nullptr && center != nullptr) {
+        for(int i = 0; i < points; i++) {
+            dif[i] = (center[i] - left[i]) / h;
+        }
+    }
+
+    return dif;
 }
