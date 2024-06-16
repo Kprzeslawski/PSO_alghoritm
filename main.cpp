@@ -36,25 +36,26 @@ void calculate_slope() {
     auto param_l = new double[] {
         1e-4,
         7000.,
-        50.,
-        0.08,
-        50,
+        50e3,
+        0.08*3e10,
+        50e3,
         0.6,
         0.2,
         0.8,
         0.,
-        0.00008,
+        0.00008e13,
         0.08
     };
 
     // variable 1
-    int param_n = 2;
+    int param_n = 3;
     D p = 0.05;
-    auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
+    int experiment = 7;
+    auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[experiment], dt->t[experiment]);
     opt_sol[param_n] -= param_l[param_n] * p;
-    auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
+    auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[experiment], dt->t[experiment]);
     opt_sol[param_n] += 2*param_l[param_n] * p;
-    auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
+    auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[experiment], dt->t[experiment]);
 
     auto forw = calculate_diff(1001,0.5e-05,res,res_max,nullptr);
     auto back = calculate_diff(1001,0.5e-05,res,nullptr,res_min);
