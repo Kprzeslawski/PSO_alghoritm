@@ -20,8 +20,8 @@ int main() {
 void calculate_slope() {
     auto dt = DataStorage::getInstance();
     auto opt_sol = new double[] {
-      9.50753e-05,
-      17945.4,
+      9.50753e-05,//A1
+      17945.4,//A2
       1e3 * 83.349,//A3
       3e10 * 0.05317,//A4
       1e3 * 123.12,//A5
@@ -33,26 +33,45 @@ void calculate_slope() {
       0.07486 //A13
     };
 
+    auto param_l = new double[] {
+        1e-4,
+        7000.,
+        50.,
+        0.08,
+        50,
+        0.6,
+        0.2,
+        0.8,
+        0.,
+        0.00008,
+        0.08
+    };
+
     // variable 1
-    auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
-    opt_sol[0] -= 0.5e-05;
-    auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
-    opt_sol[0] += 1e-05;
-    auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[8], dt->t[8]);
+    int param_n = 2;
+    D p = 0.05;
+    auto res = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
+    opt_sol[param_n] -= param_l[param_n] * p;
+    auto res_min = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
+    opt_sol[param_n] += 2*param_l[param_n] * p;
+    auto res_max = testFunctions::CalcUsingEuler(opt_sol, dt->e_dot[7], dt->t[7]);
 
     auto forw = calculate_diff(1001,0.5e-05,res,res_max,nullptr);
     auto back = calculate_diff(1001,0.5e-05,res,nullptr,res_min);
-    auto center = calculate_diff(1001,0.5e-05,nullptr,res_max,res_min);
+    auto center = calculate_diff(1001,0.5e-05,res,res_max,res_min);
 
-        std::ofstream plik("data_diff.txt");
+    std::ofstream plik("data_diff.txt");
+        plik << "opt; opt-h; opt+h; grad; grad-h; grad+h"<< std::endl;
         for (int i2 = 0; i2 < 1001; i2++)
             plik
-                << center[i2] << ", "
-                << back[i2] << ", "
-                << forw[i2] << ", "
+                << res[i2] << "; "
+                << res_min[i2] << "; "
+                << res_max[i2] << "; "
+                << center[i2] << "; "
+                << back[i2] << "; "
+                << forw[i2] << "; "
                 << std::endl;
         plik.close();
-
 
 }
 
@@ -135,19 +154,19 @@ void test_1() {
 D* calculate_diff(int points,D h, D* center, D* right, D* left) {
     D* dif = new double[points];
 
-    if(right != nullptr && left != nullptr) {
+    if(right != nullptr && left != nullptr && center != nullptr) {
         for(int i = 0; i < points; i++) {
-            dif[i] = (right[i] - left[i]) / (2*h);
+            dif[i] = (right[i] - left[i])/center[i]/2.;
         }
     }
     else if(right != nullptr && center != nullptr) {
         for(int i = 0; i < points; i++) {
-            dif[i] = (right[i] - center[i]) / h;
+            dif[i] = (right[i] - center[i])/center[i];
         }
     }
     else if(left != nullptr && center != nullptr) {
         for(int i = 0; i < points; i++) {
-            dif[i] = (center[i] - left[i]) / h;
+            dif[i] = (center[i] - left[i])/center[i];
         }
     }
 
